@@ -35,4 +35,5 @@ void set_baseline() {
   initial_reading = sum/5;
   digitalWrite(IRLED, LOW);
   digitalWrite(pinch_control_pin, HIGH);
+  delay(10000);
 }

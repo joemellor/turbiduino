@@ -1,3 +1,14 @@
+void connect_to_wifi() {
+  while ( status != WL_CONNECTED) { 
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(ssid);
+  status = WiFi.begin(ssid, pass);
+  // wait 5 seconds for connection to fully resolve.
+  delay(5000);
+  Serial.println(WiFi.localIP()); }
+}
+
+
 void getRunID() {
   client.connect(server, 80);
   client.println("GET /turbiduino/date.php HTTP/1.1");
@@ -30,7 +41,7 @@ void logData() {
   client.print("&time=");
   client.print(timer);
   client.print("&doublings=");
-  client.print(pump_counter * 0.025);
+  client.print(pump_counter);
   client.print("&temp=");
   client.print(temp);
   client.println(" HTTP/1.1");
