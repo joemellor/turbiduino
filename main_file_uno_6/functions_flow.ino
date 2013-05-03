@@ -6,7 +6,7 @@ void pulse_media() {
     digitalWrite(pump_control_pin, LOW);
     Serial.println("Pulse!");
     pump_counter++; 
-    current_doubling = pump_counter * 0.015;
+    current_doubling = pump_counter * 0.03;
     pump_cycle = millis();
     //tweet();
 }

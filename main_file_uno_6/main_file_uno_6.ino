@@ -73,27 +73,25 @@ void loop() {
       }
       //adjusts the heaters by getting ambient temperature.
       get_avg_temp();
-      
       if (current_doubling != last_doubling) {
         take_sample(); }
       if (millis() - minutecounter > 60000) {
         minutecounter = millis();
         timer++;
       }      
-
     }
 }
 
 void take_sample() {
+  digitalWrite(pinch_control_pin, LOW); //close the valve 
   digitalWrite(autosampler_pin, HIGH);
   last_doubling = current_doubling;
   for (int i = 0; i < 8; i++) {
-    digitalWrite(pinch_control_pin, LOW); //close the valve 
     pulse_media();
-    delay(6000);
-    digitalWrite(pinch_control_pin, HIGH); //open the valve 
-    delay(9000);
+    delay(10000);
     }
   digitalWrite(autosampler_pin, LOW);
+  delay(10000);
+  digitalWrite(pinch_control_pin, HIGH); //open the valve 
 }
 
