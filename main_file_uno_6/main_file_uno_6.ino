@@ -26,7 +26,7 @@ float temp;
 unsigned long IR_cycle = 0;
 unsigned long pump_cycle = 0;
 unsigned long timer = 0;
-unsigned long minutecounter = 0;
+unsigned long secondcounter = 0;
 int pump_counter = 0;
 int current_doubling = 0;
 int last_doubling = 0;
@@ -75,11 +75,11 @@ void loop() {
       get_avg_temp();
       if (current_doubling != last_doubling) {
         take_sample(); }
-      if (millis() - minutecounter > 60000) {
-        minutecounter = millis();
-        timer++;
-      }      
     }
+    if (millis() - secondcounter > 1000) {
+      secondcounter = millis();
+      timer++;
+     }      
 }
 
 void take_sample() {
