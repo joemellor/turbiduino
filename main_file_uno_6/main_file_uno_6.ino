@@ -15,6 +15,7 @@ const int heat_control_pin = 5;
 const int pump_control_pin = 6;
 const int pinch_control_pin = 8;
 const int autosampler_pin = 4;
+const int autosampler_divert_pin = 3;
 
 //initializing global variables
 int reading1;
@@ -41,6 +42,7 @@ void setup()
   pinMode(pump_control_pin, OUTPUT);
   pinMode(pinch_control_pin, OUTPUT);
   pinMode(autosampler_pin, OUTPUT);
+  pinMode(autosampler_divert_pin, OUTPUT);
   digitalWrite(pinch_control_pin, HIGH);
   digitalWrite(pump_control_pin, LOW);
   
@@ -84,14 +86,16 @@ void loop() {
 
 void take_sample() {
   digitalWrite(autosampler_pin, HIGH);
+  digitalWrite(autosampler_divert_pin, HIGH);
   last_doubling = current_doubling;
   for (int i = 0; i < 8; i++) {
     digitalWrite(pinch_control_pin, LOW); //close the valve 
     pulse_media();
     delay(6000);
     digitalWrite(pinch_control_pin, HIGH); //open the valve
-    delay(20000); 
+    delay(25000); 
     }
+  digitalWrite(autosampler_divert_pin, LOW);
   digitalWrite(autosampler_pin, LOW);
 }
 
