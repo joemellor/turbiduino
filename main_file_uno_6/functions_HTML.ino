@@ -1,4 +1,5 @@
 void connect_to_wifi() {
+  digitalWrite(pinch_control_pin, HIGH);
   while ( status != WL_CONNECTED) { 
   Serial.print("Attempting to connect to SSID: ");
   Serial.println(ssid);
