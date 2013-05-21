@@ -1,3 +1,5 @@
+/*Uses the Arduino's wifi shield to connect to the specificed
+wifi network. Opens pinch valve during this lengthy process.*/
 void connect_to_wifi() {
   digitalWrite(pinch_control_pin, HIGH);
   while ( status != WL_CONNECTED) { 
@@ -10,24 +12,29 @@ void connect_to_wifi() {
 }
 
 
+/* Calls a script on the server to get the current date and time,
+which is parsed and stored as a unique 'runID' */
 void getRunID() {
   client.connect(server, 80);
   client.println("GET /turbiduino/date.php HTTP/1.1");
   client.println("Host: ferment.ccbr.utoronto.ca");
   client.println();
+  //allocate memory for the runID variable and fill it up.
   memset(&runID, 0, 17);
   char c = client.read();
   while (c != '<') {
     c = client.read(); }
     for(int i = 0; i < 12; i++) {
     runID[i] = client.read(); }
-  runID[12] = '\0';
+  runID[12] = '\0';  //null-terminate the string
   
   client.stop();
   client.flush();
 }
 
 
+/* sends data about the current run to a server-side script using
+a 'GET' method. */
 void logData() {
   client.connect(server, 80);
   client.print("GET /turbiduino/update.php?runID=");
@@ -51,6 +58,8 @@ void logData() {
 }
 
 
+/* a complicated although memory-efficient function that gives
+the arduino float to String conversion. Taken from the forums. */
 char * floatToString(char * outstr, double val, byte precision, byte widthp){
   char temp[16];
   byte i;
