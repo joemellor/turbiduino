@@ -46,15 +46,13 @@ void setup()
   digitalWrite(pinch_control_pin, HIGH);
   digitalWrite(pump_control_pin, LOW);
   
-// start the server
+// start the server and get the unique id of this run.
   connect_to_wifi();
-  //this line will not appear on the serial monitor if the 
-  //sketch is too large.
-  Serial.println("initializing...");
   getRunID();
   
 
-  //records the initial OD to mantain the culture at.
+  /*records the initial OD to mantain the culture at and takes
+  an initial sample */
   set_baseline();
   digitalWrite(autosampler_pin, LOW);
   Serial.println(initial_reading);
@@ -75,6 +73,7 @@ void loop() {
       }
       //adjusts the heaters by getting ambient temperature.
       get_avg_temp();
+      //if a doubling has occured, take a sample.
       if (current_doubling != last_doubling) {
         take_sample(); }
     }
@@ -84,18 +83,24 @@ void loop() {
      }      
 }
 
+/* diverts the output tubing to a collector and dilutes
+the culture in order to take a sample at that timepoint. */
 void take_sample() {
+  //divert output to collector
   digitalWrite(autosampler_pin, HIGH);
   digitalWrite(autosampler_divert_pin, HIGH);
   last_doubling = current_doubling;
+  //dilute the culture
   for (int i = 0; i < 8; i++) {
     digitalWrite(pinch_control_pin, LOW); //close the valve 
     pulse_media();
     delay(6000);
     digitalWrite(pinch_control_pin, HIGH); //open the valve
-    delay(25000); 
+    delay(25000);  //wait for pressure to normalize
     }
+  //divert the output back to waste and allow pressure to stabilize.
   digitalWrite(autosampler_divert_pin, LOW);
   digitalWrite(autosampler_pin, LOW);
+  delay(5000);
 }
 

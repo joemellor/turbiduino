@@ -1,7 +1,7 @@
-int reads[5];
-
+/*Switches the IRLED on and takes three quick readings using the
+photodiode which are then averaged. */
 void IR_onpulse() {
-  digitalWrite(pinch_control_pin, LOW); //pinch the valve
+  digitalWrite(pinch_control_pin, LOW); //pinch the valve (prevent bubbles)
   delay(1000);
   digitalWrite(IRLED, HIGH); 
   Serial.print("IRLED ON: ");
@@ -14,6 +14,9 @@ void IR_onpulse() {
   Serial.print(reading1);
   Serial.print(" , ");  }
   
+
+/*Switches the IRLED off, takes a photodiode reading, and stores
+it in a global variable. */
 void IR_offpulse() {
   digitalWrite(IRLED, LOW);
   delay(1000);
@@ -23,6 +26,9 @@ void IR_offpulse() {
   digitalWrite(pinch_control_pin, HIGH); //open the valve 
 }
 
+
+/* Follows a very similar procudure to the 'IR_onpulse' function
+to store a baseline OD. Averages 5 readings instead of 3. */
 void set_baseline() {
   digitalWrite(pinch_control_pin, LOW);
   delay(2000);
@@ -35,5 +41,5 @@ void set_baseline() {
   initial_reading = sum/5;
   digitalWrite(IRLED, LOW);
   digitalWrite(pinch_control_pin, HIGH);
-  delay(10000);
+  delay(10000); //a delay to allow the entire system to normalize.
 }
