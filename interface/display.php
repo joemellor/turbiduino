@@ -15,6 +15,10 @@ $result = pg_query($con, $query);
 //store the resulting data in the array $rows.
 $rows = pg_fetch_all($result);
 
+//view webcam feed
+echo '<div style = "float:right">';
+echo '<img src = "webcam/photo.jpg" alt = "webcam feed"></br></div></br>';
+
 //lay out the 'recent readings' table.
 echo "number of readings: ";
 $size = count($rows);
